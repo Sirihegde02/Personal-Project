@@ -39,21 +39,36 @@ class Solution:
         #         output[i] = product // c
         # return output
 
-        #Best approach:
-        #Using three lists , where two lists store the previous and upcoming number products
-        #Time complexity: O(n)
-        #Space complexity: O(n)
-        n = len(nums)
-        output = [0] * n
-        pref = [0] * n
-        suff = [0] * n
+        # #Best approach:
+        # #Using three lists , where two lists store the previous and upcoming number products
+        # #Time complexity: O(n)
+        # #Space complexity: O(n)
+        # n = len(nums)
+        # output = [0] * n
+        # pref = [0] * n
+        # suff = [0] * n
 
-        pref[0] = suff[n - 1] = 1
-        for i in range(1, n):
-            pref[i] = nums[i - 1] * pref[i - 1]
-        #Traversing from n-2 end to -1 beginning:
-        for i in range(n - 2, -1, -1):
-            suff[i] = nums[i + 1] * suff[i + 1]
+        # pref[0] = suff[n - 1] = 1
+        # for i in range(1, n):
+        #     pref[i] = nums[i - 1] * pref[i - 1]
+        # #Traversing from n-2 end to -1 beginning:
+        # for i in range(n - 2, -1, -1):
+        #     suff[i] = nums[i + 1] * suff[i + 1]
+        # for i in range(n):
+        #     output[i] = pref[i] * suff[i]
+        # return output
+
+        #More optimal solution:
+        #Time complexity: O(n)
+        #Space complexity: O(1) Since the output array is excluded from space analysis
+        n = len(nums)
+        output = [1] * n
+        pref = 1
         for i in range(n):
-            output[i] = pref[i] * suff[i]
+            output[i] = pref
+            pref *= nums[i] #Update the prefix for the next output number
+        posf = 1
+        for i in range(n - 1, -1, -1):
+            output[i] *= posf
+            posf *= nums[i] #Update the postfix for the next output number
         return output
